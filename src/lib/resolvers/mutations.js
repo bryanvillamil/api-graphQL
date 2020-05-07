@@ -1,4 +1,5 @@
 import { connectDB } from '../db'
+import { errorHandler } from '../errorHandler';
 import { ObjectID } from 'mongodb';
 
 export const mutations = {
@@ -18,7 +19,7 @@ export const mutations = {
         course = await db.collection('Courses').insertOne(newCourse)
         newCourse._id = course.insertedId
       } catch (error){
-        console.log('error al crear un curso', error)
+        errorHandler(error)
       }
   
       return newCourse
@@ -36,7 +37,7 @@ export const mutations = {
         )
         course = await db.collection('Courses').findOne({ _id: ObjectID(_id) })
       } catch (error){
-        console.log('error al Editar un curso', error)
+        errorHandler(error)
       }
   
       return course
@@ -51,7 +52,7 @@ export const mutations = {
         course = await db.collection('Courses').findOne({ _id: ObjectID(_id) }) // Buscamos el id que nos envian a eliminar
         await db.collection('Courses').deleteOne({ _id: ObjectID(_id) }) // aqui lo eliminamos
       } catch (error){
-        console.log('error al Eliminar un curso', error)
+        errorHandler(error)
       }
   
       return course
@@ -72,7 +73,7 @@ export const mutations = {
         person = await db.collection('Students').insertOne(newPerson)
         newPerson._id = person.insertedId
       } catch (error){
-        console.log('error al crear una persona', error)
+        errorHandler(error)
       }
   
       return newPerson
@@ -90,7 +91,7 @@ export const mutations = {
         )
         person = await db.collection('Students').findOne({ _id: ObjectID(_id)})
       } catch (error){
-        console.log('error al editar un Persona', error)
+        errorHandler(error)
       }
   
       return person
@@ -105,7 +106,7 @@ export const mutations = {
         person = await db.collection('Students').findOne({ _id: ObjectID(_id)})
         await db.collection('Students').deleteOne({ _id: ObjectID(_id)})
       } catch (error){
-        console.log('error al Eliminar un Estudiante', error)
+        errorHandler(error)
       }
   
       return person
@@ -133,7 +134,7 @@ export const mutations = {
           { $addToSet: {people: ObjectID(personID)}}
         )
       } catch (error){
-        console.log('error al agregar people', error)
+        errorHandler(error)
       }
       
       return course

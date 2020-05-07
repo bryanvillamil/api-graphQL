@@ -1,4 +1,5 @@
 import { connectDB } from '../db'
+import { errorHandler } from '../errorHandler'
 import { ObjectID } from 'mongodb';
 
 export const queries = {
@@ -12,7 +13,7 @@ export const queries = {
         db = await connectDB()
         courses = await db.collection('Courses').find().toArray()
       } catch (error) {
-        console.log('error al traer todos los cursos', error);
+        errorHandler(error)
       }
 
       return courses
@@ -26,7 +27,7 @@ export const queries = {
         db = await connectDB()
         course = await db.collection('Courses').findOne({ _id: ObjectID(id) })
       } catch (error) {
-        console.log('error al traer curso', error);
+        errorHandler(error)
       }
 
       return course
@@ -42,7 +43,7 @@ export const queries = {
         db = await connectDB()
         people = await db.collection('Students').find().toArray()
       } catch (error) {
-        console.log('error al traer todos la people', error);
+        errorHandler(error)
       }
 
       return people
@@ -56,7 +57,7 @@ export const queries = {
         db = await connectDB()
         person = await db.collection('Students').findOne({ _id: ObjectID(id) })
       } catch (error) {
-        console.log('error al traer un estudiante', error);
+        errorHandler(error)
       }
 
       return person

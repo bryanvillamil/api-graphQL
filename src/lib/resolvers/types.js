@@ -1,4 +1,5 @@
 import { connectDB } from '../db'
+import { errorHandler } from '../errorHandler'
 import { ObjectID } from 'mongodb'
 
 export const types = {
@@ -15,20 +16,10 @@ export const types = {
         ).toArray() 
         : []
       } catch (error){
-        console.log('error', error)
+        errorHandler(error)
       }
 
       return peopleData
-    }
-  },
-
-  Person: {
-    __resolveType: (person, context, info) => {
-      if (person.phone) {
-        return 'Monitor'
-      }
-
-      return 'Student'
     }
   },
 }

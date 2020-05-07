@@ -3,7 +3,7 @@ export const schema = `
     _id: ID
     title: String!
     description: String
-    people: [Person]
+    people: [Student]
   }
 
   input CourseInput {
