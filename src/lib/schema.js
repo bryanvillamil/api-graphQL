@@ -3,6 +3,7 @@ export const schema = `
     _id: ID
     title: String!
     description: String
+    people: [Person]
   }
 
   input CourseInput {
@@ -10,14 +11,30 @@ export const schema = `
     description: String
   }
 
-  type Student {
+  interface Person {
     _id: ID
     name: String!
     apellido: String
     email: String
   }
 
-  input StudentInput {
+  type Student implements Person {
+    _id: ID
+    name: String!
+    apellido: String
+    email: String
+    avatar: String
+  }
+
+  type Monitor implements Person {
+    _id: ID
+    name: String!
+    apellido: String
+    email: String
+    phone: String
+  }
+
+  input PersonInput {
     name: String!
     apellido: String
     email: String
@@ -29,10 +46,10 @@ export const schema = `
     "devuelve un cursos"
     getCourse(id: ID!): Course
 
-    "devuelve todos los estudiante"
-    getStudents: [Student]
-    "devuelve un estudiante"
-    getStudent(id: ID!): Student
+    "devuelve todas lsa personas"
+    getPeople: [Person]
+    "devuelve una persona"
+    getPerson(id: ID!): Person
   }
 
   type Mutation {
@@ -43,11 +60,14 @@ export const schema = `
     "eliminar un curso"
     deleteCourse(_id: ID!): Course
 
-    "Crear un Estudiante"
-    createStudent(input: StudentInput!) : Student
-    "Editar un Estudiante"
-    editStudent(_id: ID!, input: StudentInput!) : Student
-    "Editar un Estudiante"
-    deleteStudent(_id: ID!) : Student
+    "Crear una persona"
+    createPerson(input: PersonInput!) : Person
+    "Editar una persona"
+    editPerson(_id: ID!, input: PersonInput!) : Person
+    "Editar una persona"
+    deletePerson(_id: ID!) : Person
+
+    "Agregar una persona a un Cursos"
+    addPeople(courseID: ID!, personID: ID!) : Course
   }
 `

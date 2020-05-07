@@ -34,32 +34,32 @@ export const queries = {
 
 
     // Query students
-    async getStudents () {
+    async getPeople () {
       let db
-      let students = []
+      let people = []
 
       try{
         db = await connectDB()
-        students = await db.collection('Students').find().toArray()
+        people = await db.collection('Students').find().toArray()
       } catch (error) {
-        console.log('error al traer todos los students', error);
+        console.log('error al traer todos la people', error);
       }
 
-      return students
+      return people
     },
     // Query student
-    async getStudent (_, { id }) {
+    async getPerson (_, { id }) {
       let db
-      let student
+      let person
 
       try{
         db = await connectDB()
-        student = await db.collection('Students').findOne({ _id: ObjectID(id) })
+        person = await db.collection('Students').findOne({ _id: ObjectID(id) })
       } catch (error) {
         console.log('error al traer un estudiante', error);
       }
 
-      return student
+      return person
     },
   }
 }

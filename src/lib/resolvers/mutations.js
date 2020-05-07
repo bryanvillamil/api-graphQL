@@ -16,7 +16,7 @@ export const mutations = {
       try{
         db = await connectDB()
         course = await db.collection('Courses').insertOne(newCourse)
-        newCourse._id = task.insertedId
+        newCourse._id = course.insertedId
       } catch (error){
         console.log('error al crear un curso', error)
       }
@@ -58,29 +58,29 @@ export const mutations = {
     },
 
     // Mutations Students
-    async createStudent (_, { input }) {
+    async createPerson (_, { input }) {
       const defaults = {
         apellido: ''
       }
   
-      const newStudent = Object.assign(defaults, input)
+      const newPerson = Object.assign(defaults, input)
       let db
-      let student = []
+      let person
   
       try{
         db = await connectDB()
-        student = await db.collection('Students').insertOne(newStudent)
-        newStudent._id = student.insertedId
+        person = await db.collection('Students').insertOne(newPerson)
+        newPerson._id = person.insertedId
       } catch (error){
-        console.log('error al crear un Estudiante', error)
+        console.log('error al crear una persona', error)
       }
   
-      return newStudent
+      return newPerson
     },
     // EDIT Student
-    async editStudent (_, { _id, input }) {
+    async editPerson (_, { _id, input }) {
       let db
-      let student
+      let person
   
       try{
         db = await connectDB()
@@ -88,27 +88,55 @@ export const mutations = {
           { _id: ObjectID(_id) },
           { $set: input }
         )
-        student = await db.collection('Students').findOne({ _id: ObjectID(_id)})
+        person = await db.collection('Students').findOne({ _id: ObjectID(_id)})
       } catch (error){
-        console.log('error al editar un Estudiante', error)
+        console.log('error al editar un Persona', error)
       }
   
-      return student
+      return person
     },
     // DELETE Student
-    async deleteStudent (_, { _id }) {
+    async deletePerson(_, { _id }) {
       let db
-      let student
+      let person
   
       try{
         db = await connectDB()
-        student = await db.collection('Students').findOne({ _id: ObjectID(_id)})
+        person = await db.collection('Students').findOne({ _id: ObjectID(_id)})
         await db.collection('Students').deleteOne({ _id: ObjectID(_id)})
       } catch (error){
         console.log('error al Eliminar un Estudiante', error)
       }
   
-      return student
+      return person
     },
-  }
+
+
+    // Add Person (People)
+    async addPeople (_, { courseID, personID }) {
+      let db
+      let person
+      let course
+  
+      console.log('courseID', courseID)
+      console.log('personID', personID)
+  
+      try{
+        db = await connectDB()
+        course = await db.collection('Courses').findOne({ _id: ObjectID(courseID) })
+        person = await db.collection('Students').findOne({ _id: ObjectID(personID) })
+  
+        if (!course || !person) throw new Error('El Estudiante o el Curso no existe')
+  
+        await db.collection('Courses').updateOne(
+          { _id: ObjectID(courseID)},
+          { $addToSet: {people: ObjectID(personID)}}
+        )
+      } catch (error){
+        console.log('error al agregar people', error)
+      }
+      
+      return course
+    },
+  },
 }
