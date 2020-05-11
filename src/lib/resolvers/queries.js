@@ -70,8 +70,6 @@ export const queries = {
       let items
       let courses
       let people
-
-      console.log('Keyword', keyword);
   
       try{
         db = await connectDB()

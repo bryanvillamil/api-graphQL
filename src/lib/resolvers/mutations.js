@@ -119,9 +119,6 @@ export const mutations = {
       let person
       let course
   
-      console.log('courseID', courseID)
-      console.log('personID', personID)
-  
       try{
         db = await connectDB()
         course = await db.collection('Courses').findOne({ _id: ObjectID(courseID) })

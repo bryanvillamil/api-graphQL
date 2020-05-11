@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import gqlMiddleware from 'express-graphql'
 import { schema as typeDefs } from './lib/schema'
 import { resolvers } from './lib/resolvers/index'
@@ -10,9 +11,13 @@ const app = express()
 
 const schema = makeExecutableSchema({ typeDefs, resolvers })
 
+
+
 app.get('/', (req, res) => {
   res.send('Page Home');
 })
+
+app.use(cors())
 
 app.use('/graphql', gqlMiddleware({
   schema,
