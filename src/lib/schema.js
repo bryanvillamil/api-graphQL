@@ -1,14 +1,27 @@
 export const schema = `
+
+  "Union Global"
+  union GlobalSearch = Course | Student | Monitor
+
+  "Valida los tipos de Nivel"
+  enum Level {
+    principiante
+    intermedio
+    avanzado
+  }
+
   type Course {
     _id: ID
     title: String!
     description: String
     people: [Student]
+    level: Level
   }
 
   input CourseInput {
     title: String!
     description: String
+    level: Level
   }
 
   interface Person {
@@ -38,6 +51,8 @@ export const schema = `
     name: String!
     apellido: String
     email: String
+    avatar: String
+    phone: String
   }
 
   type Query {
@@ -50,6 +65,9 @@ export const schema = `
     getPeople: [Person]
     "devuelve una persona"
     getPerson(id: ID!): Person
+
+    "ejecuta una busqueda global"
+    searchItems(keyword: String!) : [GlobalSearch]
   }
 
   type Mutation {

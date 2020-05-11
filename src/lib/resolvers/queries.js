@@ -62,5 +62,33 @@ export const queries = {
 
       return person
     },
+
+
+     // Search Global
+     async searchItems (_, { keyword  }) {
+      let db
+      let items
+      let courses
+      let people
+
+      console.log('Keyword', keyword);
+  
+      try{
+        db = await connectDB()
+        courses = await db.collection('Courses').find(
+          { $text: { $search: keyword } }
+        ).toArray()
+        people = await db.collection('Students').find(
+          { $text: { $search: keyword } }
+        ).toArray()
+        
+        items = [...courses, ...people]
+
+      } catch (error) {
+        errorHandler(error)
+      }
+  
+      return items
+    },
   }
 }

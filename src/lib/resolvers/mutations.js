@@ -10,7 +10,7 @@ export const mutations = {
         description: ''
       }
   
-      const newCourse = Object.assign(defaults, input)
+      const newCourse = {...defaults, ...input}
       let db
       let course = []
   
